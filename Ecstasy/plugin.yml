@@ -1,0 +1,11 @@
+name: Ecstasy
+depend: [Vault]
+main: net.ecstasygaming.Ecstasy
+author: Zuthara
+version: 1.0.3
+description: Ecstasy Gaming Custom Plugin
+
+commands:
+  item:
+    default: op
+    usage: Item Command

@@ -63,18 +63,16 @@ public class InventoryEvents implements Listener {
 			{
 				if(e.getItemStack().getItemMeta().getDisplayName() == is.getItemMeta().getDisplayName())
 				{
-					if(e.getDropType() == DropType.DISALLOW_DROP)
+					if(e.getDropType() == DropType.ALLOW_DROP)
 					{
-						event.getDrops().remove(is); // Removes the drop from the dropped items list
-						// Add the item to the list of saved items upon respawn
-						
 						// These items are soulbound items only - non-soulbound items get dropped
-						saved.add(is);
-						
+						saved.add(is);						
 					}
 				}
 			}
 		}
+		
+		event.getDrops().clear();
 		
 		saved_items.put(p.getName(), saved);
 	}
@@ -90,7 +88,7 @@ public class InventoryEvents implements Listener {
 					event.getPlayer().getInventory().addItem(is);
 				}
 				
-				Messenger.toPlayer(event.getPlayer(), "One or more soulbound items have been returned to you.", MessageType.MESSAGE);
+				Messenger.toPlayer(event.getPlayer(), "Soulbound items have been returned to you.", MessageType.MESSAGE);
 			}
 		}
 	}
