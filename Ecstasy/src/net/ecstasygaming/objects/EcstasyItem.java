@@ -63,6 +63,8 @@ public class EcstasyItem {
 		this.att_dodge = 0.00;
 		this.att_crit = 0.00;
 		
+		this.droptype = droptype;
+		
 		is = new ItemStack(stack,amount);
 		this.applyStats();
 	}
@@ -85,6 +87,8 @@ public class EcstasyItem {
 		this.att_dodge = 0.00;
 		this.att_crit = 0.00;
 		
+		this.droptype = droptype;
+		
 		is = new ItemStack(stack,amount);
 		this.applyStats();
 	}
@@ -106,6 +110,35 @@ public class EcstasyItem {
 		this.att_armor = arm;
 		this.att_dodge = dodge;
 		this.att_crit = crit;
+		
+		this.droptype = droptype;
+		
+		is = new ItemStack(stack,amount);
+		this.applyStats();
+	}
+	public EcstasyItem(String name, ItemRarity rarity, int reqLevel, int itemlevel, Material stack, String type, int amount, double str, double sta, double intel, double disc, double rng, double arm, double dodge, double crit, DropType droptype, double minHit, double maxHit)
+	{
+		this.item_name = name;
+		this.rarity = rarity;
+		this.item_level = itemlevel;
+		this.stack = stack;
+		this.item_type = type;
+		this.item_usage_level = reqLevel;
+		
+		this.att_strength = str;
+		this.att_stamina = sta;
+		this.att_intellect = intel;
+		this.att_discipline = disc;
+		this.att_ranged = rng;
+		
+		this.att_armor = arm;
+		this.att_dodge = dodge;
+		this.att_crit = crit;
+		
+		this.droptype = droptype;
+		
+		this.min_damage = minHit;
+		this.max_damage = maxHit;
 		
 		is = new ItemStack(stack,amount);
 		this.applyStats();
@@ -175,7 +208,7 @@ public class EcstasyItem {
 		if(this.getDropType() == DropType.DISALLOW_DROP) lore.add("" + ChatColor.WHITE + "Soulbound");
 		else if(this.getDropType() == DropType.ALLOW_DROP) lore.add("" + ChatColor.WHITE + " ");
 		
-		lore.add(" ");
+		// lore.add(" ");
 		if(att_armor > 0.00)
 		{
 			lore.add("" + ChatColor.WHITE + "Equipment                 " + (int)att_armor + " Armor");
@@ -186,9 +219,17 @@ public class EcstasyItem {
 			if(item_type.equalsIgnoreCase("sword")) lore.add("" + ChatColor.WHITE + "One-Hand                       " + item_type);
 			else if(item_type.equalsIgnoreCase("bow")) lore.add("" + ChatColor.WHITE + "One-Hand                       " + item_type);
 			else if(item_type.equalsIgnoreCase("armor")) lore.add("" + ChatColor.WHITE + "                               " + item_type);
-			else lore.add("" + ChatColor.WHITE + "                               " + item_type);
-			lore.add("" + ChatColor.WHITE + "" + min_damage + " - " + max_damage + " Damage             Speed 1.00");
-			lore.add(" ");
+			
+			if(item_type.equalsIgnoreCase("sword"))
+			{
+				lore.add("" + ChatColor.WHITE + "" + min_damage + " - " + max_damage + " Damage             Speed 1.00");
+				lore.add(" ");
+			}
+			else if(item_type.equalsIgnoreCase("bow"))
+			{
+				lore.add("" + ChatColor.WHITE + "" + min_damage + " - " + max_damage + " Damage             Speed 2.20");
+				lore.add(" ");
+			}
 		}
 		// Stats
 		
@@ -198,10 +239,10 @@ public class EcstasyItem {
 		if(att_intellect > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_intellect) + " Intellect");
 		if(att_discipline > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_discipline) + " Discipline");
 		if(att_ranged > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_ranged) + " Ranged");
-		if(att_dodge > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_dodge) + " Dodge");
-		if(att_crit > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_crit) + " Critical Strike");
-		lore.add(" ");lore.add(" ");
-		lore.add("Requires Level " + item_usage_level);
+		if(att_dodge > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_dodge) + ".0% Dodge");
+		if(att_crit > 0.00) lore.add("" + ChatColor.WHITE + "+" + ((int) att_crit) + ".0% Critical Strike");
+		if(!item_type.equalsIgnoreCase("item") && !item_type.equalsIgnoreCase("gem")) { lore.add(" ");lore.add(" "); }
+		if(item_usage_level > 1) lore.add("" + ChatColor.YELLOW + "Requires Level " + item_usage_level);
 		
 		im.setLore(lore);
 		is.setItemMeta(im);

@@ -2,7 +2,7 @@ name: Ecstasy
 depend: [Vault]
 main: net.ecstasygaming.Ecstasy
 author: Zuthara
-version: 1.0.27
+version: 1.0.34
 description: Ecstasy Gaming Custom Plugin
 
 commands:

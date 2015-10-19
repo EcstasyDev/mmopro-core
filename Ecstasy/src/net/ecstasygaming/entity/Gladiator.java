@@ -167,6 +167,8 @@ public class Gladiator {
 	public void setHealth(double amount)
 	{
 		this.health = amount;
+		
+		// TODO: Adjust the proportional amount of hearts they have remaining
 	}
 	public void setOutgoingDamageMultiplier(double multiplier)
 	{
@@ -218,7 +220,7 @@ public class Gladiator {
 	{ // Resynchronizes the attributes, health, etc. of the player with the current armor, weapon, and status
 		Ecstasy.log.info("Resynchronizing stats for " + p.getName());
 		
-		// Add up the values for the armor and stuff that the player is wearing
+		// TODO: Add up the values for the armor and stuff that the player is wearing
 	}
 	
 	public Player getPlayer()
