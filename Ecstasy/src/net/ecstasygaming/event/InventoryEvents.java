@@ -28,7 +28,7 @@ public class InventoryEvents implements Listener {
 		this.plugin = plugin;
 	}
 	
-	private HashMap<String,List<ItemStack>> saved_items = new HashMap<String,List<ItemStack>>();
+	public static HashMap<String,List<ItemStack>> saved_items = new HashMap<String,List<ItemStack>>();
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onItemDrop(PlayerDropItemEvent event)
@@ -49,13 +49,14 @@ public class InventoryEvents implements Listener {
 		}
 	}
 	
-	@EventHandler (priority = EventPriority.LOW)
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerDeath_DROP(PlayerDeathEvent event)
 	{
 		// Cycle through player's items and check for soulbound items
 		// Player will keep their soulbound items and lose everything else (Minecraft PVP Feature)
 		Player p = event.getEntity();
 		List<ItemStack> saved = new ArrayList<ItemStack>();
+		
 		// Normal inventory contents
 		for(ItemStack is : event.getDrops())
 		{
@@ -63,34 +64,48 @@ public class InventoryEvents implements Listener {
 			{
 				if(e.getItemStack().getItemMeta().getDisplayName() == is.getItemMeta().getDisplayName())
 				{
-					if(e.getDropType() == DropType.ALLOW_DROP)
+					if(e.getDropType() == DropType.DISALLOW_DROP)
 					{
 						// These items are soulbound items only - non-soulbound items get dropped
-						saved.add(is);						
+						
+						is.setDurability((short) (is.getDurability() - (is.getType().getMaxDurability()/8)));
+						
+						saved.add(is);
+						
+						Ecstasy.log.info("Saved Soulbound Item: " + is.getItemMeta().getDisplayName());
+					}
+					else
+					{
+						p.getWorld().dropItemNaturally(p.getLocation(), is);
 					}
 				}
 			}
 		}
 		
 		event.getDrops().clear();
-		
 		saved_items.put(p.getName(), saved);
 	}
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn_REGAIN_SB(PlayerRespawnEvent event)
 	{
-		if(saved_items.containsKey(event.getPlayer()))
+		if(InventoryEvents.saved_items.containsKey(event.getPlayer().getName()))
 		{
-			if(saved_items.get(event.getPlayer().getName()).size() > 0)
+			ItemStack is = null;
+			int size = InventoryEvents.saved_items.get(event.getPlayer().getName()).size();
+			
+			if(size > 0)
 			{
-				for(ItemStack is : saved_items.get(event.getPlayer().getName()))
+				for(int i = 0; i < size; i++)
 				{
+					is = InventoryEvents.saved_items.get(event.getPlayer().getName()).get(i);
+					
 					event.getPlayer().getInventory().addItem(is);
 				}
 				
-				Messenger.toPlayer(event.getPlayer(), "Soulbound items have been returned to you.", MessageType.MESSAGE);
+				Messenger.toPlayer(event.getPlayer(), "Soulbound items have been returned to your inventory.", MessageType.MESSAGE);
 			}
 		}
+		
 	}
 	
 }
