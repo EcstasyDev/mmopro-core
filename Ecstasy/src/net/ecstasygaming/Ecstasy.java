@@ -3,6 +3,10 @@ package net.ecstasygaming;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +64,26 @@ public class Ecstasy extends JavaPlugin {
 		this.getCommand("item").setExecutor(new CMD_Item(this));
 		
 		LootManager.init();
+		
+		// Kick all players (for reloads)
+		for(Player pl : this.getServer().getOnlinePlayers())
+		{
+			pl.kickPlayer("You have been disconnected from the server.");
+		}
+		
+		// Clear out existing mobs from the world (for reloads)
+		// This would not affect pets/mounts since they can be respawned using abilities
+		for(World w : this.getServer().getWorlds())
+		{
+			for(Entity e : w.getEntities())
+			{
+				if((e instanceof LivingEntity))
+				{
+					((LivingEntity) e).setHealth(0.00);
+				}
+			}
+		}
+		// Following this, mobs would be able to respawn using combined vanilla and custom mechanics
 		
 	}
 	@Override

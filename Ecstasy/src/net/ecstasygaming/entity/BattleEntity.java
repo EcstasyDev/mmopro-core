@@ -64,7 +64,7 @@ public class BattleEntity {
 		{
 			this.name = name;
 			
-			String str = "" + getHealthColor() + "(" + level + ")" + name;
+			String str = "" + getHealthColor() + "(" + level + ") " + name + "[" + this.getHealth() + " / " + this.getMaxHealth() + "]";
 			
 			e.setCustomName(str);
 			e.setCustomNameVisible(true);
@@ -73,11 +73,11 @@ public class BattleEntity {
 		private ChatColor getHealthColor() {
 			double d = health / max_health;
 			
-			if(d > 95.00) return ChatColor.DARK_GREEN;
-			else if(d > 80.00) return ChatColor.GREEN;
-			else if(d > 60.00) return ChatColor.YELLOW;
-			else if(d > 40.00) return ChatColor.GOLD;
-			else if(d > 20.00) return ChatColor.RED;
+			if(d > 0.95) return ChatColor.DARK_GREEN;
+			else if(d > 0.80) return ChatColor.GREEN;
+			else if(d > 0.60) return ChatColor.YELLOW;
+			else if(d > 0.40) return ChatColor.GOLD;
+			else if(d > 0.20) return ChatColor.RED;
 			else return ChatColor.DARK_RED;
 		}
 

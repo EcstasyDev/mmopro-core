@@ -183,7 +183,10 @@ public class EcstasyItem {
 		}
 		else
 		{
-			lore.add("" + ChatColor.WHITE + "One-Hand                       " + item_type);
+			if(item_type.equalsIgnoreCase("sword")) lore.add("" + ChatColor.WHITE + "One-Hand                       " + item_type);
+			else if(item_type.equalsIgnoreCase("bow")) lore.add("" + ChatColor.WHITE + "One-Hand                       " + item_type);
+			else if(item_type.equalsIgnoreCase("armor")) lore.add("" + ChatColor.WHITE + "                               " + item_type);
+			else lore.add("" + ChatColor.WHITE + "                               " + item_type);
 			lore.add("" + ChatColor.WHITE + "" + min_damage + " - " + max_damage + " Damage             Speed 1.00");
 			lore.add(" ");
 		}
