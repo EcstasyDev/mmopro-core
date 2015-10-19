@@ -146,8 +146,10 @@ public class Gladiator {
 		switch(this.cls)
 		{
 		case 0: return "Warrior";
-		case 1: return "Scout";
-		case 2: return "Mage";
+		case 1: return "Paladin";
+		case 2: return "Hunter";
+		case 3: return "Mage";
+		case 4: return "Priest";
 		case -1: return "Loading";
 		}
 		return "null";
