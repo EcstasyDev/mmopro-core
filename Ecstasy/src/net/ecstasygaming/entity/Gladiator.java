@@ -1,8 +1,12 @@
 package net.ecstasygaming.entity;
 
+import java.util.ConcurrentModificationException;
+
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
 import net.md_5.bungee.api.ChatColor;
@@ -223,6 +227,64 @@ public class Gladiator {
 		Ecstasy.log.info("Resynchronizing stats for " + p.getName());
 		
 		// TODO: Add up the values for the armor and stuff that the player is wearing
+		this.att_stamina = 0.0;
+		this.att_strength = 0.0;
+		this.att_intellect = 0.0;
+		this.att_discipline = 0.0;
+		this.att_ranged = 0.0;
+		this.att_armor = 0.0;
+		this.att_crit = 0.0;
+		this.att_dodge = 0.0;
+		
+		for(ItemStack is : p.getInventory().getArmorContents())
+		{
+			if(is.hasItemMeta())
+			{
+				// Cycle through items to find it
+				EcstasyItem i = null;
+				for(String key : Ecstasy.items.keySet())
+				{
+					if(Ecstasy.items.get(key).getItemStack().equals(is))
+					{
+						i = Ecstasy.items.get(key);
+						break;
+					}
+				}
+				
+				if(i != null)
+				{
+					try
+					{
+						att_strength += i.getCombatAttribute(PlayerCombatAttribute.STRENGTH);
+						att_stamina += i.getCombatAttribute(PlayerCombatAttribute.STAMINA);
+						att_intellect += i.getCombatAttribute(PlayerCombatAttribute.INTELLECT);
+						att_discipline += i.getCombatAttribute(PlayerCombatAttribute.DISCIPLINE);
+						att_ranged += i.getCombatAttribute(PlayerCombatAttribute.RANGED);
+						
+						att_armor += i.getCombatAttribute(PlayerCombatAttribute.ARMOR);
+						att_crit += i.getCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE);
+						att_dodge += i.getCombatAttribute(PlayerCombatAttribute.DODGE);
+					} catch(ConcurrentModificationException e)
+					{
+						Ecstasy.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
+					}
+				}
+				else
+				{
+					Ecstasy.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
+				}
+			}
+		}
+		
+		Ecstasy.log.info("New Stats for " + p.getName() +
+				" [STR: " + att_strength + "]" +
+				" [STA: " + att_stamina + "]" +
+				" [INT: " + att_intellect + "]" +
+				" [DSC: " + att_discipline + "]" +
+				" [RNG: " + att_ranged + "]" +
+				" [ARM: " + att_armor + "]" +
+				" [CRT: " + att_crit + "]" +
+				" [DGD: " + att_dodge + "]");
 	}
 	
 	public Player getPlayer()

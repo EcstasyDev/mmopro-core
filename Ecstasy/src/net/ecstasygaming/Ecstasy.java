@@ -19,6 +19,7 @@ import net.ecstasygaming.event.MobSpawningHandler;
 import net.ecstasygaming.event.PlayerCombatEventHandler;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.objects.LootManager;
+import net.ecstasygaming.task.TASK_ResyncPlayer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -84,6 +85,11 @@ public class Ecstasy extends JavaPlugin {
 			}
 		}
 		// Following this, mobs would be able to respawn using combined vanilla and custom mechanics
+		
+		
+		// Tasks
+		log.info("Registering global tasks and timers...");
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TASK_ResyncPlayer(), 0L, 20L);
 		
 	}
 	@Override
