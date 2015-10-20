@@ -299,6 +299,10 @@ public class MobSpawningHandler implements Listener {
 					Ecstasy.log.severe("BUGSQUASHER: Teleported mob to bugged zone.");
 				}
 			}
+			else
+			{
+				
+			}
 		}
 	}
 	@EventHandler (priority = EventPriority.LOW)

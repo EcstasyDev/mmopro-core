@@ -285,6 +285,12 @@ public class Gladiator {
 				" [ARM: " + att_armor + "]" +
 				" [CRT: " + att_crit + "]" +
 				" [DGD: " + att_dodge + "]");
+		
+		double prop = (this.getHealth() / this.getMaxHealth());
+		
+		this.setMaxHealth((att_stamina * 6.5));
+		this.setHealth((prop * this.getMaxHealth()));
+		
 	}
 	
 	public Player getPlayer()
