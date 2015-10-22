@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.ecstasygaming.Ecstasy;
-import net.ecstasygaming.objects.LootManager;
+import net.ecstasygaming.util.LootManager;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
 

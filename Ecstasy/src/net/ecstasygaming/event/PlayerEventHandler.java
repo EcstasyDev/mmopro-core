@@ -12,10 +12,10 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import net.ecstasygaming.Ecstasy;
 import net.ecstasygaming.entity.Gladiator;
 
-public class PlayerCombatEventHandler implements Listener {
+public class PlayerEventHandler implements Listener {
 
 	Ecstasy plugin;
-	public PlayerCombatEventHandler(Ecstasy plugin)
+	public PlayerEventHandler(Ecstasy plugin)
 	{
 		Ecstasy.log.info("Linked Player Combat handler.");
 		this.plugin = plugin;
@@ -49,6 +49,10 @@ public class PlayerCombatEventHandler implements Listener {
 	public void OnPlayerConnect(PlayerJoinEvent event)
 	{
 		// Gladiator class extends Player indirectly
-		Ecstasy.players.put(event.getPlayer().getName(), new Gladiator(event.getPlayer()));
+		Gladiator g = new Gladiator(event.getPlayer());
+		Ecstasy.players.put(event.getPlayer().getName(), g);
+		
+		g.loadInfo();
+		
 	}
 }

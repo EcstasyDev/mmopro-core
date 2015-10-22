@@ -37,6 +37,11 @@ public class Gladiator {
 	private double att_dodge;
 	private double att_crit;
 	
+	private double max_resource;
+	private double resource;
+	
+	private ItemStack[] pastContents = null;
+	
 	private Player p; // The corresponding player entity which this class connects to
 	
 	public Gladiator(Player p)
@@ -59,6 +64,8 @@ public class Gladiator {
 		att_armor = 0.00;
 		att_dodge = 0.00;
 		att_crit = 0.00;
+		
+		resource = 1;
 		
 		setTitle("",TitlePosition.BEFORE); // Initializes the custom name
 	}
@@ -221,76 +228,92 @@ public class Gladiator {
 		case STAMINA: att_stamina = value;
 		}
 	}
+	public void setResource(double res)
+	{
+		this.resource = res;
+	}
+	public double getResource() { return this.resource; }
+	public void setMaxResource(double res)
+	{
+		this.max_resource = res;
+	}
+	public double getMaxResource() { return this.max_resource; }
+	
 	
 	public void resyncAttributes()
 	{ // Resynchronizes the attributes, health, etc. of the player with the current armor, weapon, and status
-		Ecstasy.log.info("Resynchronizing stats for " + p.getName());
 		
-		// TODO: Add up the values for the armor and stuff that the player is wearing
-		this.att_stamina = 0.0;
-		this.att_strength = 0.0;
-		this.att_intellect = 0.0;
-		this.att_discipline = 0.0;
-		this.att_ranged = 0.0;
-		this.att_armor = 0.0;
-		this.att_crit = 0.0;
-		this.att_dodge = 0.0;
+		if(p.getInventory().getArmorContents() != this.pastContents)
+		{ // Only resync if the player's armor has changed in the last 1 second
+			this.pastContents = p.getInventory().getArmorContents();
+			// Ecstasy.log.info("Resynchronizing stats for " + p.getName());
 		
-		for(ItemStack is : p.getInventory().getArmorContents())
-		{
-			if(is.hasItemMeta())
+			// TODO: Add up the values for the armor and stuff that the player is wearing
+			this.att_stamina = 0.0;
+			this.att_strength = 0.0;
+			this.att_intellect = 0.0;
+			this.att_discipline = 0.0;
+			this.att_ranged = 0.0;
+			this.att_armor = 0.0;
+			this.att_crit = 0.0;
+			this.att_dodge = 0.0;
+			
+			for(ItemStack is : p.getInventory().getArmorContents())
 			{
-				// Cycle through items to find it
-				EcstasyItem i = null;
-				for(String key : Ecstasy.items.keySet())
+				if(is.hasItemMeta())
 				{
-					if(Ecstasy.items.get(key).getItemStack().equals(is))
+					// Cycle through items to find it
+					EcstasyItem i = null;
+					for(String key : Ecstasy.items.keySet())
 					{
-						i = Ecstasy.items.get(key);
-						break;
+						if(Ecstasy.items.get(key).getItemStack().equals(is))
+						{
+							i = Ecstasy.items.get(key);
+							break;
+						}
 					}
-				}
-				
-				if(i != null)
-				{
-					try
+					
+					double dBase = ((20.0/(double)level)+(level)); // Permits a curve for new players
+					if(i != null)
 					{
-						att_strength += i.getCombatAttribute(PlayerCombatAttribute.STRENGTH);
-						att_stamina += i.getCombatAttribute(PlayerCombatAttribute.STAMINA);
-						att_intellect += i.getCombatAttribute(PlayerCombatAttribute.INTELLECT);
-						att_discipline += i.getCombatAttribute(PlayerCombatAttribute.DISCIPLINE);
-						att_ranged += i.getCombatAttribute(PlayerCombatAttribute.RANGED);
-						
-						att_armor += i.getCombatAttribute(PlayerCombatAttribute.ARMOR);
-						att_crit += i.getCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE);
-						att_dodge += i.getCombatAttribute(PlayerCombatAttribute.DODGE);
-					} catch(ConcurrentModificationException e)
-					{
-						Ecstasy.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
+						try
+						{
+							att_strength += i.getCombatAttribute(PlayerCombatAttribute.STRENGTH)+dBase;
+							att_stamina += i.getCombatAttribute(PlayerCombatAttribute.STAMINA)+dBase;
+							att_intellect += i.getCombatAttribute(PlayerCombatAttribute.INTELLECT)+dBase;
+							att_discipline += i.getCombatAttribute(PlayerCombatAttribute.DISCIPLINE)+dBase;
+							att_ranged += i.getCombatAttribute(PlayerCombatAttribute.RANGED)+dBase;
+							
+							att_armor += i.getCombatAttribute(PlayerCombatAttribute.ARMOR);
+							att_crit += i.getCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE);
+							att_dodge += i.getCombatAttribute(PlayerCombatAttribute.DODGE);
+						} catch(ConcurrentModificationException e)
+						{
+							Ecstasy.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
+						}
 					}
-				}
-				else
-				{
-					Ecstasy.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
+					else
+					{
+						Ecstasy.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
+					}
 				}
 			}
+			
+			double prop = (this.getHealth() / this.getMaxHealth());
+			
+			this.max_health = (att_stamina * 6.5);
+			this.health = (prop * this.getMaxHealth());
+			
+			prop = (this.getResource() / this.getMaxResource());
+			
+			// Recalculate total mana
+			if(this.getClassNumber() == 1 || this.getClassNumber() == 3 || this.getClassNumber() == 4) this.max_resource = (10*((att_intellect/3) + (att_discipline/6)));
+			else if(this.getClassNumber() == 2) this.max_resource = (10*((att_ranged/3) + (att_stamina/6)));
+			else if(this.getClassNumber() == 0) this.max_resource = (10*((att_strength/3) + (att_stamina/6)));
+			else this.max_resource = 0;
+			
+			this.resource = prop * this.max_resource;
 		}
-		
-		Ecstasy.log.info("New Stats for " + p.getName() +
-				" [STR: " + att_strength + "]" +
-				" [STA: " + att_stamina + "]" +
-				" [INT: " + att_intellect + "]" +
-				" [DSC: " + att_discipline + "]" +
-				" [RNG: " + att_ranged + "]" +
-				" [ARM: " + att_armor + "]" +
-				" [CRT: " + att_crit + "]" +
-				" [DGD: " + att_dodge + "]");
-		
-		double prop = (this.getHealth() / this.getMaxHealth());
-		
-		this.setMaxHealth((att_stamina * 6.5));
-		this.setHealth((prop * this.getMaxHealth()));
-		
 	}
 	
 	public Player getPlayer()
@@ -301,9 +324,35 @@ public class Gladiator {
 	public void loadInfo()
 	{ // Loads the player's info from the database
 		
+		if(Ecstasy.config_players.contains(p.getUniqueId().toString()))
+		{
+			this.level = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".level");
+			this.cls = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".class");
+			this.xp = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".xp");
+			String t = Ecstasy.config_players.getString(p.getUniqueId().toString() + ".title.text");
+			int tpos = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".title.pos");
+			
+			if(t != null)
+			{
+				if(tpos == -1) this.setTitle(t, TitlePosition.BEFORE);
+				else if(tpos == 1) this.setTitle(t, TitlePosition.AFTER);
+			}
+			
+			resyncAttributes();
+		}
+		else
+		{
+			Ecstasy.log.info("Player '" + p.getName() + "' does not have a configuration saved.  Creating...");
+			saveInfo();
+			loadInfo();
+		}
 	}
 	public void saveInfo()
 	{ // Pushes the player's info to the database
-		
+		Ecstasy.config_players.set(p.getUniqueId().toString() + ".level", 1);
+		Ecstasy.config_players.set(p.getUniqueId().toString() + ".cls", 1);
+		Ecstasy.config_players.set(p.getUniqueId().toString() + ".xp", 1);
+		Ecstasy.config_players.set(p.getUniqueId().toString() + ".title.text", "");
+		Ecstasy.config_players.set(p.getUniqueId().toString() + ".title.pos", 0);
 	}
 }

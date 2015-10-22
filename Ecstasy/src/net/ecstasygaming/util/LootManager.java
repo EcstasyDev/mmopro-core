@@ -1,4 +1,4 @@
-package net.ecstasygaming.objects;
+package net.ecstasygaming.util;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 
 import net.ecstasygaming.Ecstasy;
 import net.ecstasygaming.entity.Gladiator;
+import net.ecstasygaming.objects.DropType;
+import net.ecstasygaming.objects.EcstasyItem;
+import net.ecstasygaming.objects.ItemRarity;
 import net.md_5.bungee.api.ChatColor;
 
 public class LootManager {

@@ -37,96 +37,18 @@ public class MobSpawningHandler implements Listener {
 	public void onCreatureSpawn(CreatureSpawnEvent event)
 	{
 		Entity e = event.getEntity();
+		if(e instanceof Player) return;
+		
 		int level = 1;
 		double health = 1.00; // base health
 		boolean elite = false;
 		
-		int LMax = 5, LMin = 1;
+		int LMax = 50, LMin = 1;
 		
 		BattleEntity be = new BattleEntity(e);
 		
-		switch(e.getWorld().getBiome(e.getLocation().getBlockX(),e.getLocation().getBlockZ()))
-		{
-		case SWAMPLAND:
-			if(e.getLocation().distance(e.getWorld().getSpawnLocation()) < 800.0)
-			{
-				LMin = 1;
-				LMin = 5;
-			}
-			else
-			{
-				LMin = 5;
-				LMax = 10;
-			}
-			elite = false;
-			break;
-		case FOREST:
-			if(e.getLocation().distance(e.getWorld().getSpawnLocation()) < 4000.0)
-			{
-				LMin = 10;
-				LMin = 20;
-				elite = false;
-			}
-			else
-			{
-				LMin = 10;
-				LMax = 20;
-				elite = true;
-			}
-			break;
-		case TAIGA:
-			LMin = 50;
-			LMax = 50;
-			elite = false;
-			break;
-		case SAVANNA:
-			LMin = 20;
-			LMax = 30;
-			elite = false;
-			break;
-		case DESERT:
-			LMin = 30;
-			LMax = 40;
-			elite = false;
-			break;
-		case EXTREME_HILLS:
-			LMin = 40;
-			LMax = 50;
-			elite = false;
-			break;
-		case HELL:
-			LMin = 50;
-			LMax = 50;
-			elite = true;
-			break;
-		case FROZEN_OCEAN:
-			LMin = 50;
-			LMax = 50;
-			elite = true;
-			break;
-		case OCEAN:
-			LMin = 100;
-			LMax = 100;
-			elite = false;
-			break;
-		case DEEP_OCEAN:
-			LMin = 250;
-			LMax = 250;
-			elite = false;
-			break;
-		case RIVER:
-			LMin = 1;
-			LMax = 10;
-			elite = false;
-			break;
-		default:
-			LMin = 1;
-			LMax = 10;
-			elite = false;
-			break;
-		}
-		
-		// Generate level based on biome restrictions
+		// TODO: Generate level based on zone restrictions
+		// TODO: FIRST CREATE A SYSTEM TO DEFINE ZONES
 		
 		Random r = new Random();
 		level = r.nextInt(Math.abs(LMax-LMin+1))+LMin;
@@ -140,6 +62,9 @@ public class MobSpawningHandler implements Listener {
 			be.setCombatAttribute(PlayerCombatAttribute.RANGED, (level*184.5));
 			be.setCombatAttribute(PlayerCombatAttribute.INTELLECT, (level*184.5));
 			be.setCombatAttribute(PlayerCombatAttribute.DISCIPLINE, (level*184.5));
+			
+			be.setCombatAttribute(PlayerCombatAttribute.DODGE, (level*184.5));
+			be.setCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE, (level*184.5));
 		}
 		else
 		{
@@ -148,9 +73,12 @@ public class MobSpawningHandler implements Listener {
 			be.setCombatAttribute(PlayerCombatAttribute.RANGED, (level*65.5));
 			be.setCombatAttribute(PlayerCombatAttribute.INTELLECT, (level*65.5));
 			be.setCombatAttribute(PlayerCombatAttribute.DISCIPLINE, (level*65.5));
+			
+			be.setCombatAttribute(PlayerCombatAttribute.DODGE, (level*65.5));
+			be.setCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE, (level*65.5));
 		}
 		
-		health = be.getCombatAttribute(PlayerCombatAttribute.STAMINA) * 6.75;
+		health = be.getCombatAttribute(PlayerCombatAttribute.STAMINA) * 6.25;
 		
 		be.setElite(elite);
 		if(elite) be.setMaxHealth(health);
@@ -283,7 +211,16 @@ public class MobSpawningHandler implements Listener {
 					}
 					else if(event.getDamager() instanceof LivingEntity)
 					{
+						LivingEntity le = (LivingEntity) event.getDamager();
+						be = Ecstasy.mobs.get(le.getEntityId());
 						
+						maxHit = (int) be.getCombatAttribute(PlayerCombatAttribute.STRENGTH)/9;
+						minHit = (int) be.getCombatAttribute(PlayerCombatAttribute.STRENGTH)/13;
+						
+						// Determine the base hit
+						baseDamage = r.nextInt((Math.abs(maxHit-minHit)+1)) + minHit;
+						
+						// Check for critical chance
 					}
 					else
 					{
@@ -291,6 +228,9 @@ public class MobSpawningHandler implements Listener {
 					}
 					// Note: Spell Damage is handled in EntityDamageEvent as effect damage
 					// This handler only handles direct physical damage
+					
+					
+					if(be.getHealth() < 0) ((LivingEntity) e).setHealth(0.00);
 				}
 				else
 				{
@@ -300,8 +240,47 @@ public class MobSpawningHandler implements Listener {
 				}
 			}
 			else
-			{
+			{ // Player is the victim
+				Player p = (Player) e;
 				
+				if(Ecstasy.players.containsKey(p.getName()))
+				{
+					Gladiator g = Ecstasy.players.get(p.getName());
+					
+					if(event.getDamager() instanceof Player)
+					{
+						Player damager = (Player) event.getDamager();
+						Gladiator h = Ecstasy.players.get(damager.getName());
+						
+						
+					}
+					else if(event.getDamager() instanceof Arrow)
+					{
+						Arrow a = (Arrow) event.getDamager();
+						
+						if(a.getShooter() instanceof Player)
+						{ // Player shot the arrow
+							// Player p = (Player) a.getShooter();
+							// Gladiator g = Ecstasy.players.get(p.getName());
+						}
+						else if(event.getDamager() instanceof LivingEntity)
+						{ // NPC Living Entity shot the arrow
+							
+						}
+						else
+						{ // Arrow was shot by a cannon or dispenser (or null source)
+							
+						}
+					}
+					else if(event.getDamager() instanceof LivingEntity)
+					{
+						
+					}
+					else
+					{
+						Ecstasy.log.severe("Unable to determine the source of a damage event on Player " + p.getName());
+					}
+				}
 			}
 		}
 	}
