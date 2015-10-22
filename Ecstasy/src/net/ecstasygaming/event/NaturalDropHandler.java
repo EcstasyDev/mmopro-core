@@ -6,16 +6,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.objects.EcstasyItem;
 
 public class NaturalDropHandler implements Listener {
 
-	Ecstasy plugin;
-	public NaturalDropHandler(Ecstasy plugin)
+	MMOPro plugin;
+	public NaturalDropHandler(MMOPro plugin)
 	{
 		this.plugin = plugin;
-		Ecstasy.log.info("Registered Natural Drop Handler.");
+		MMOPro.log.info("Registered Natural Drop Handler.");
 	}
 	
 	@EventHandler (priority = EventPriority.LOW)
@@ -26,11 +26,11 @@ public class NaturalDropHandler implements Listener {
 		
 		EcstasyItem ei = null;
 		// Attempt to locate the item from the master list of modified items
-		for(String k : Ecstasy.items.keySet())
+		for(String k : MMOPro.items.keySet())
 		{
-			if(Ecstasy.items.get(k).getItemStack().getType() == is.getType())
+			if(MMOPro.items.get(k).getItemStack().getType() == is.getType())
 			{ // item is located
-				ei = Ecstasy.items.get(k);
+				ei = MMOPro.items.get(k);
 			}
 		}
 		if(ei != null)

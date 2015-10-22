@@ -26,6 +26,7 @@ import net.ecstasygaming.event.MobSpawningHandler;
 import net.ecstasygaming.event.NaturalDropHandler;
 import net.ecstasygaming.event.PlayerEventHandler;
 import net.ecstasygaming.objects.EcstasyItem;
+import net.ecstasygaming.task.TASK_AutosaveConfigs;
 import net.ecstasygaming.task.TASK_RegenMana;
 import net.ecstasygaming.task.TASK_ResyncPlayer;
 import net.ecstasygaming.util.LootManager;
@@ -33,7 +34,7 @@ import net.ecstasygaming.util.Zone;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
-public class Ecstasy extends JavaPlugin {
+public class MMOPro extends JavaPlugin {
 	
 	public static Logger log;
 	
@@ -109,6 +110,9 @@ public class Ecstasy extends JavaPlugin {
 			log.severe("Unable to locate global configuration file, please redownload the plugin.");
 			pm.disablePlugin(this);
 		}
+		
+		if(!this.isEnabled()) return;
+		
 		f = new File(this.getDataFolder() + File.separator + "zones.yml");
 		if(f.exists())
 		{
@@ -120,6 +124,9 @@ public class Ecstasy extends JavaPlugin {
 			log.severe("Unable to locate world zones configuration file, please redownload the plugin.");
 			pm.disablePlugin(this);
 		}
+		
+		if(!this.isEnabled()) return;
+		
 		f = new File(this.getDataFolder() + File.separator + "players.yml");
 		if(f.exists())
 		{
@@ -131,6 +138,10 @@ public class Ecstasy extends JavaPlugin {
 			log.severe("Unable to locate player configuration file, please redownload the plugin.");
 			pm.disablePlugin(this);
 		}
+		
+		if(!this.isEnabled()) return;
+		
+		
 		log.info("Loading global configuration into cached memory.");
 		// TODO: Put common global config values here
 		
@@ -166,6 +177,7 @@ public class Ecstasy extends JavaPlugin {
 		log.info("Registering global tasks and timers...");
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TASK_ResyncPlayer(), 0L, 20L);
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TASK_RegenMana(), 0L, 100L);
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TASK_AutosaveConfigs(this), 0L, 6000L);
 		
 	}
 	@Override
@@ -177,8 +189,8 @@ public class Ecstasy extends JavaPlugin {
 				config_zones.save(new File(this.getDataFolder() + File.separator + "zones.yml"));
 				config_players.save(new File(this.getDataFolder() + File.separator + "players.yml"));
 			} catch (IOException e) {
-				Ecstasy.log.severe("An error occurred while saving the configuration and data files.");
-				Ecstasy.log.severe("Please check your files, as data may have been lost.");
+				MMOPro.log.severe("An error occurred while saving the configuration and data files.");
+				MMOPro.log.severe("Please check your files, as data may have been lost.");
 			}
 	}
 	

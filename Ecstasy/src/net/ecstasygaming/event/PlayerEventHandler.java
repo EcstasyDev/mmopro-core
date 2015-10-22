@@ -7,17 +7,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.entity.Gladiator;
 
 public class PlayerEventHandler implements Listener {
 
-	Ecstasy plugin;
-	public PlayerEventHandler(Ecstasy plugin)
+	MMOPro plugin;
+	public PlayerEventHandler(MMOPro plugin)
 	{
-		Ecstasy.log.info("Linked Player Combat handler.");
+		MMOPro.log.info("Linked Player Combat handler.");
 		this.plugin = plugin;
 	}
 	
@@ -45,14 +46,23 @@ public class PlayerEventHandler implements Listener {
 	public void OnPlayerRespawn(PlayerRespawnEvent event)
 	{
 	}
-	@EventHandler (priority = EventPriority.LOW)
+	@EventHandler (priority = EventPriority.HIGH)
 	public void OnPlayerConnect(PlayerJoinEvent event)
 	{
 		// Gladiator class extends Player indirectly
 		Gladiator g = new Gladiator(event.getPlayer());
-		Ecstasy.players.put(event.getPlayer().getName(), g);
+		MMOPro.players.put(event.getPlayer().getName(), g);
 		
 		g.loadInfo();
+		
+	}
+	@EventHandler (priority = EventPriority.HIGH)
+	public void OnPlayerDisconnect(PlayerQuitEvent event)
+	{
+		// Gladiator class extends Player indirectly
+		Gladiator g = new Gladiator(event.getPlayer());
+		
+		g.saveInfo();
 		
 	}
 }

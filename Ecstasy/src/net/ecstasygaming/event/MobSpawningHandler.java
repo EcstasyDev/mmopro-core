@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.Gladiator;
 import net.ecstasygaming.entity.PlayerCombatAttribute;
@@ -26,10 +26,10 @@ import net.ecstasygaming.util.Messenger;
 
 public class MobSpawningHandler implements Listener {
 	
-	Ecstasy plugin;
-	public MobSpawningHandler(Ecstasy plugin)
+	MMOPro plugin;
+	public MobSpawningHandler(MMOPro plugin)
 	{
-		Ecstasy.log.info("Linked Mob Spawning handler.");
+		MMOPro.log.info("Linked Mob Spawning handler.");
 		this.plugin = plugin;
 	}
 	
@@ -88,7 +88,7 @@ public class MobSpawningHandler implements Listener {
 		
 		be.setName(WordUtils.capitalizeFully(e.getName()));
 		
-		Ecstasy.mobs.put(e.getEntityId(), be);
+		MMOPro.mobs.put(e.getEntityId(), be);
 		
 	}	
 	@EventHandler (priority = EventPriority.NORMAL)
@@ -101,10 +101,10 @@ public class MobSpawningHandler implements Listener {
 			if(!(e instanceof Player))
 			{ // Entity is not a player at all
 				// Find the battle entity
-				if(Ecstasy.mobs.containsKey(e.getEntityId()))
+				if(MMOPro.mobs.containsKey(e.getEntityId()))
 				{
 					event.setDamage(0.00); // cancels the native event damage
-					BattleEntity be = Ecstasy.mobs.get(e.getEntityId());
+					BattleEntity be = MMOPro.mobs.get(e.getEntityId());
 					
 					double baseDamage = 0.00;
 					double critChance = 0.00;
@@ -115,7 +115,7 @@ public class MobSpawningHandler implements Listener {
 					if(event.getDamager() instanceof Player)
 					{ // Player directly caused the damage
 						Player p = (Player) event.getDamager();
-						Gladiator g = Ecstasy.players.get(p.getName());
+						Gladiator g = MMOPro.players.get(p.getName());
 						
 						
 						// Retrieve base damage
@@ -125,9 +125,9 @@ public class MobSpawningHandler implements Listener {
 							
 							if(is.hasItemMeta())
 							{
-								if(Ecstasy.items.containsKey(is.getItemMeta().getDisplayName().toUpperCase()))
+								if(MMOPro.items.containsKey(is.getItemMeta().getDisplayName().toUpperCase()))
 								{
-									EcstasyItem i = Ecstasy.items.get(is.getItemMeta().getDisplayName().toUpperCase());
+									EcstasyItem i = MMOPro.items.get(is.getItemMeta().getDisplayName().toUpperCase());
 									
 									if(i.getMinimumDamage() > 0.00) minHit = (int) (i.getMinimumDamage()+1);
 									if(i.getMaximumDamage() > 0.00) maxHit = (int) (i.getMaximumDamage()+1);
@@ -212,7 +212,7 @@ public class MobSpawningHandler implements Listener {
 					else if(event.getDamager() instanceof LivingEntity)
 					{
 						LivingEntity le = (LivingEntity) event.getDamager();
-						be = Ecstasy.mobs.get(le.getEntityId());
+						be = MMOPro.mobs.get(le.getEntityId());
 						
 						maxHit = (int) be.getCombatAttribute(PlayerCombatAttribute.STRENGTH)/9;
 						minHit = (int) be.getCombatAttribute(PlayerCombatAttribute.STRENGTH)/13;
@@ -224,7 +224,7 @@ public class MobSpawningHandler implements Listener {
 					}
 					else
 					{
-						Ecstasy.log.severe("Unable to determine the source of a damage event on Entity " + e.getEntityId());
+						MMOPro.log.severe("Unable to determine the source of a damage event on Entity " + e.getEntityId());
 					}
 					// Note: Spell Damage is handled in EntityDamageEvent as effect damage
 					// This handler only handles direct physical damage
@@ -234,23 +234,23 @@ public class MobSpawningHandler implements Listener {
 				}
 				else
 				{
-					Ecstasy.log.severe("Mob entered combat without valid attributes.");
+					MMOPro.log.severe("Mob entered combat without valid attributes.");
 					event.getEntity().teleport(new Location(e.getWorld(),-15000.0,1000.0,-15000.0));
-					Ecstasy.log.severe("BUGSQUASHER: Teleported mob to bugged zone.");
+					MMOPro.log.severe("BUGSQUASHER: Teleported mob to bugged zone.");
 				}
 			}
 			else
 			{ // Player is the victim
 				Player p = (Player) e;
 				
-				if(Ecstasy.players.containsKey(p.getName()))
+				if(MMOPro.players.containsKey(p.getName()))
 				{
-					Gladiator g = Ecstasy.players.get(p.getName());
+					Gladiator g = MMOPro.players.get(p.getName());
 					
 					if(event.getDamager() instanceof Player)
 					{
 						Player damager = (Player) event.getDamager();
-						Gladiator h = Ecstasy.players.get(damager.getName());
+						Gladiator h = MMOPro.players.get(damager.getName());
 						
 						
 					}
@@ -278,7 +278,7 @@ public class MobSpawningHandler implements Listener {
 					}
 					else
 					{
-						Ecstasy.log.severe("Unable to determine the source of a damage event on Player " + p.getName());
+						MMOPro.log.severe("Unable to determine the source of a damage event on Player " + p.getName());
 					}
 				}
 			}

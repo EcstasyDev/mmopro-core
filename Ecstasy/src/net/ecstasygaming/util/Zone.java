@@ -6,7 +6,7 @@ import org.bukkit.World;
 
 import com.sk89q.worldedit.bukkit.selections.Selection;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.PlayerCombatAttribute;
 
@@ -35,23 +35,23 @@ public class Zone {
 	// For initializing zones from config (Existing Zones)
 	public Zone(String identifier)
 	{
-		if(Ecstasy.config_zones.contains(identifier))
+		if(MMOPro.config_zones.contains(identifier))
 		{
-			this.zoneName = Ecstasy.config_zones.getString(identifier + ".name");
-			this.world = Bukkit.getWorld(Ecstasy.config_zones.getString(identifier + ".world"));
-			double minX = Ecstasy.config_zones.getDouble(identifier + ".min.x");
-			double minY = Ecstasy.config_zones.getDouble(identifier + ".min.y");
-			double minZ = Ecstasy.config_zones.getDouble(identifier + ".min.z");
-			double maxX = Ecstasy.config_zones.getDouble(identifier + ".max.x");
-			double maxY = Ecstasy.config_zones.getDouble(identifier + ".max.y");
-			double maxZ = Ecstasy.config_zones.getDouble(identifier + ".max.z");
+			this.zoneName = MMOPro.config_zones.getString(identifier + ".name");
+			this.world = Bukkit.getWorld(MMOPro.config_zones.getString(identifier + ".world"));
+			double minX = MMOPro.config_zones.getDouble(identifier + ".min.x");
+			double minY = MMOPro.config_zones.getDouble(identifier + ".min.y");
+			double minZ = MMOPro.config_zones.getDouble(identifier + ".min.z");
+			double maxX = MMOPro.config_zones.getDouble(identifier + ".max.x");
+			double maxY = MMOPro.config_zones.getDouble(identifier + ".max.y");
+			double maxZ = MMOPro.config_zones.getDouble(identifier + ".max.z");
 			
 			this.minPoint = new Location(this.world,minX,minY,minZ);
 			this.maxPoint = new Location(this.world,maxX,maxY,maxZ);
 		}
 		else
 		{
-			Ecstasy.log.severe("Attempted to load a zone that does not exist within records.");
+			MMOPro.log.severe("Attempted to load a zone that does not exist within records.");
 		}
 	}
 	

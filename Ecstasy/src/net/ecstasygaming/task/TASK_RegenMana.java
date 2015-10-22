@@ -3,7 +3,7 @@ package net.ecstasygaming.task;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.entity.Gladiator;
 import net.ecstasygaming.entity.PlayerCombatAttribute;
 import net.ecstasygaming.util.MessageType;
@@ -13,7 +13,7 @@ public class TASK_RegenMana implements Runnable {
 	
 	public TASK_RegenMana()
 	{
-		Ecstasy.log.info("Registered task: Player Mana Regeneration");
+		MMOPro.log.info("Registered task: Player Mana Regeneration");
 	}
 
 	@Override
@@ -22,9 +22,9 @@ public class TASK_RegenMana implements Runnable {
 		Gladiator g;
 		for(Player pl : Bukkit.getOnlinePlayers())
 		{
-			if(Ecstasy.players.containsKey(pl.getName()))
+			if(MMOPro.players.containsKey(pl.getName()))
 			{
-				g = Ecstasy.players.get(pl.getName());
+				g = MMOPro.players.get(pl.getName());
 				
 				if(g.getResource() < g.getMaxResource())
 				{

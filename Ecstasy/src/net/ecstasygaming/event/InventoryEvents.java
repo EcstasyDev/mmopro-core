@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.objects.DropType;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
@@ -21,10 +21,10 @@ import net.ecstasygaming.util.Messenger;
 
 public class InventoryEvents implements Listener {
 
-	Ecstasy plugin;
-	public InventoryEvents(Ecstasy plugin)
+	MMOPro plugin;
+	public InventoryEvents(MMOPro plugin)
 	{
-		Ecstasy.log.info("Linked Inventory Events handler.");
+		MMOPro.log.info("Linked Inventory Events handler.");
 		this.plugin = plugin;
 	}
 	
@@ -33,7 +33,7 @@ public class InventoryEvents implements Listener {
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onItemDrop(PlayerDropItemEvent event)
 	{
-		for(EcstasyItem e : Ecstasy.items.values())
+		for(EcstasyItem e : MMOPro.items.values())
 		{
 			if(e.getItemStack().getItemMeta().getDisplayName() == event.getItemDrop().getItemStack().getItemMeta().getDisplayName())
 			{
@@ -60,7 +60,7 @@ public class InventoryEvents implements Listener {
 		// Normal inventory contents
 		for(ItemStack is : event.getDrops())
 		{
-			for(EcstasyItem e : Ecstasy.items.values())
+			for(EcstasyItem e : MMOPro.items.values())
 			{
 				if(e.getItemStack().getItemMeta().getDisplayName() == is.getItemMeta().getDisplayName())
 				{
@@ -72,7 +72,7 @@ public class InventoryEvents implements Listener {
 						
 						saved.add(is);
 						
-						Ecstasy.log.info("Saved Soulbound Item: " + is.getItemMeta().getDisplayName());
+						MMOPro.log.info("Saved Soulbound Item: " + is.getItemMeta().getDisplayName());
 					}
 					else
 					{

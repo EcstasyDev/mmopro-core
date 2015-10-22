@@ -1,11 +1,14 @@
 package net.ecstasygaming.entity;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ConcurrentModificationException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.ecstasygaming.Ecstasy;
+import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
@@ -89,7 +92,7 @@ public class Gladiator {
 		
 		
 		// Adds a Gamemaster Tag or Admin Tag
-		if(p.isOp() || Ecstasy.permission.has(p, "ecstasy.gm"))
+		if(p.isOp() || MMOPro.permission.has(p, "ecstasy.gm"))
 		{
 			str = str + " " + ChatColor.DARK_PURPLE + "<GM>";
 		}
@@ -264,11 +267,11 @@ public class Gladiator {
 				{
 					// Cycle through items to find it
 					EcstasyItem i = null;
-					for(String key : Ecstasy.items.keySet())
+					for(String key : MMOPro.items.keySet())
 					{
-						if(Ecstasy.items.get(key).getItemStack().equals(is))
+						if(MMOPro.items.get(key).getItemStack().equals(is))
 						{
-							i = Ecstasy.items.get(key);
+							i = MMOPro.items.get(key);
 							break;
 						}
 					}
@@ -289,12 +292,12 @@ public class Gladiator {
 							att_dodge += i.getCombatAttribute(PlayerCombatAttribute.DODGE);
 						} catch(ConcurrentModificationException e)
 						{
-							Ecstasy.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
+							MMOPro.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
 						}
 					}
 					else
 					{
-						Ecstasy.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
+						MMOPro.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
 					}
 				}
 			}
@@ -324,13 +327,13 @@ public class Gladiator {
 	public void loadInfo()
 	{ // Loads the player's info from the database
 		
-		if(Ecstasy.config_players.contains(p.getUniqueId().toString()))
+		if(MMOPro.config_players.contains(p.getUniqueId().toString()))
 		{
-			this.level = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".level");
-			this.cls = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".class");
-			this.xp = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".xp");
-			String t = Ecstasy.config_players.getString(p.getUniqueId().toString() + ".title.text");
-			int tpos = Ecstasy.config_players.getInt(p.getUniqueId().toString() + ".title.pos");
+			this.level = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".level");
+			this.cls = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".class");
+			this.xp = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".xp");
+			String t = MMOPro.config_players.getString(p.getUniqueId().toString() + ".title.text");
+			int tpos = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".title.pos");
 			
 			if(t != null)
 			{
@@ -342,17 +345,31 @@ public class Gladiator {
 		}
 		else
 		{
-			Ecstasy.log.info("Player '" + p.getName() + "' does not have a configuration saved.  Creating...");
+			MMOPro.log.info("Player '" + p.getName() + "' does not have a configuration saved.  Creating...");
 			saveInfo();
 			loadInfo();
 		}
 	}
 	public void saveInfo()
 	{ // Pushes the player's info to the database
-		Ecstasy.config_players.set(p.getUniqueId().toString() + ".level", 1);
-		Ecstasy.config_players.set(p.getUniqueId().toString() + ".cls", 1);
-		Ecstasy.config_players.set(p.getUniqueId().toString() + ".xp", 1);
-		Ecstasy.config_players.set(p.getUniqueId().toString() + ".title.text", "");
-		Ecstasy.config_players.set(p.getUniqueId().toString() + ".title.pos", 0);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".level", this.level);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".cls", this.cls);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".xp", this.xp);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.text", this.title);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.pos", 0);
+		
+		try {
+			MMOPro.config_players.save(new File(Bukkit.getPluginManager().getPlugin("MMOPro").getDataFolder() + File.separator + "players.yml"));
+		} catch (IOException e) {
+			MMOPro.log.severe("Failed to save player configuration information.");
+		}
+	}
+	public void putInfo()
+	{ // Pushes the player's info to the database
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".level", this.level);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".cls", this.cls);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".xp", this.xp);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.text", this.title);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.pos", 0);
 	}
 }
