@@ -1,6 +1,7 @@
 package net.ecstasygaming;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -22,6 +23,7 @@ import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.Gladiator;
 import net.ecstasygaming.event.InventoryEvents;
 import net.ecstasygaming.event.MobSpawningHandler;
+import net.ecstasygaming.event.NaturalDropHandler;
 import net.ecstasygaming.event.PlayerEventHandler;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.task.TASK_RegenMana;
@@ -69,6 +71,7 @@ public class Ecstasy extends JavaPlugin {
 		pm.registerEvents(new MobSpawningHandler(this), this);
 		pm.registerEvents(new PlayerEventHandler(this), this);
 		pm.registerEvents(new InventoryEvents(this), this);
+		pm.registerEvents(new NaturalDropHandler(this), this);
 		
 		// Vault Setup
 		log.info("Setting up Vault.");
@@ -168,7 +171,15 @@ public class Ecstasy extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		
+		if(config_global != null)
+			try {
+				config_global.save(new File(this.getDataFolder() + File.separator + "global.yml"));
+				config_zones.save(new File(this.getDataFolder() + File.separator + "zones.yml"));
+				config_players.save(new File(this.getDataFolder() + File.separator + "players.yml"));
+			} catch (IOException e) {
+				Ecstasy.log.severe("An error occurred while saving the configuration and data files.");
+				Ecstasy.log.severe("Please check your files, as data may have been lost.");
+			}
 	}
 	
 	private boolean setupPermissions()
