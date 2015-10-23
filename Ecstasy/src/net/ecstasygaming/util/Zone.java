@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 
 import net.ecstasygaming.MMOPro;
@@ -55,6 +56,22 @@ public class Zone {
 		}
 	}
 	
+	public Vector getMinPointAsVector()
+	{
+		Vector v;
+		
+		v = new Vector(this.minPoint.getX(),this.minPoint.getY(),this.minPoint.getZ());
+		
+		return v;
+	}
+	public Vector getMaxPointAsVector()
+	{
+		Vector v;
+		
+		v = new Vector(this.maxPoint.getX(),this.maxPoint.getY(),this.maxPoint.getZ());
+		
+		return v;
+	}
 	public String getZoneName() { return this.zoneName; }
 	public void setMaximumZoneLevel(int n){ this.maxLevel = n; }
 	public int getMaximumZoneLevel(){ return this.maxLevel; }

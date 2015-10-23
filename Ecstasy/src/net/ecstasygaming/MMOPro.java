@@ -2,9 +2,12 @@ package net.ecstasygaming;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,6 +60,8 @@ public class MMOPro extends JavaPlugin {
 	
 	// Zones
 	public static final HashMap<String,Zone> zones = new HashMap<String,Zone>();
+	public static final ArrayList<Location> graveyards = new ArrayList<Location>();
+	public static final HashMap<String,Location> respawnLocation = new HashMap<String,Location>();
 
 	@Override
 	public void onEnable()
@@ -141,6 +146,25 @@ public class MMOPro extends JavaPlugin {
 		
 		if(!this.isEnabled()) return;
 		
+		log.info("Loading graveyard locations from regex list.");
+		
+		if(!config_global.getStringList("graveyards.list").isEmpty())
+		{
+			Location loc;
+			String[] arr;
+			for(String str : config_global.getStringList("graveyards.list"))
+			{
+				arr = str.split(" ");
+				loc = new Location(Bukkit.getWorld(arr[0]),Double.valueOf(arr[1]),Double.valueOf(arr[2]),Double.valueOf(arr[3]));
+				
+				log.info("Loaded graveyard at (" + arr[1] + "," + arr[2] + "," + arr[3] + ") @ '" + arr[0] + "'");
+				graveyards.add(loc);
+			}
+		}
+		else
+		{
+			log.severe("No graveyards found.  Respawn locations will default to bed spawns and world spawns.");
+		}
 		
 		log.info("Loading global configuration into cached memory.");
 		// TODO: Put common global config values here

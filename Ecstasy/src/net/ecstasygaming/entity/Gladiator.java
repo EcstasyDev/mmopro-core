@@ -116,7 +116,15 @@ public class Gladiator {
 			this.xp = 0;
 			
 			Messenger.toPlayer(p, "Congratulations, you have advanced to Level " + this.level + "!", MessageType.MESSAGE);
+			
+			this.resyncAttributes();
+			
+			this.putInfo();
 		}
+	}
+	public int getExperience()
+	{
+		return this.xp;
 	}
 	public int getRequiredLevelExperience(int level)
 	{
@@ -185,6 +193,11 @@ public class Gladiator {
 		this.health = amount;
 		
 		// TODO: Adjust the proportional amount of hearts they have remaining
+		double prop = ((20.0 * amount) / getMaxHealth());
+		
+		this.getPlayer().setHealth(prop);
+		
+		if(amount < 0) this.getPlayer().setHealth(0.00);
 	}
 	public void setOutgoingDamageMultiplier(double multiplier)
 	{
