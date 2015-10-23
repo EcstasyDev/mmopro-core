@@ -50,10 +50,7 @@ public class MobSpawningHandler implements Listener {
 		int LMax = 1, LMin = 0;
 		
 		BattleEntity be = new BattleEntity(e);
-		
-		// TODO: Generate level based on zone restrictions
-		// TODO: FIRST CREATE A SYSTEM TO DEFINE ZONES
-		
+
 		Zone z = null;
 		if(MMOPro.zones.size() > 0)
 		{
@@ -125,7 +122,6 @@ public class MobSpawningHandler implements Listener {
 		}
 		else
 		{
-			MMOPro.log.severe("Attempted to spawn a mob outside of a permitted zone.");
 			event.setCancelled(true);
 		}
 		

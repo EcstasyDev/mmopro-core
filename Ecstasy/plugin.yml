@@ -2,10 +2,13 @@ name: MMOPro
 depend: [Vault, WorldEdit]
 main: net.ecstasygaming.MMOPro
 author: Zuthara
-version: 1.0.45
+version: 1.0.48
 description: Ecstasy Gaming Custom Plugin
 
 commands:
   item:
     default: op
     usage: Item Command
+  zone:
+    default: op
+    usage: Zone Command

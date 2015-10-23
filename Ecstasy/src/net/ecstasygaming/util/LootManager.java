@@ -15,12 +15,12 @@ public class LootManager {
 
 	public static void init()
 	{ // Initialize the items in here and add them to the main index
-		MMOPro.items.put("GAMEMASTER HOOD", new EcstasyItem("Gamemaster Hood", ItemRarity.LEGENDARY, 1, 96, Material.LEATHER_HELMET, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.ALLOW_DROP));
-		MMOPro.items.put("GAMEMASTER'S ROBE TOP", new EcstasyItem("Gamemaster's Robe Top", ItemRarity.LEGENDARY, 1, 96, Material.LEATHER_CHESTPLATE, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
-		MMOPro.items.put("GAMEMASTER'S ROBE BOTTOM", new EcstasyItem("Gamemaster's Robe Bottom", ItemRarity.LEGENDARY, 1, 96, Material.LEATHER_LEGGINGS, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
-		MMOPro.items.put("GAMEMASTER'S SLIPPERS", new EcstasyItem("Gamemaster's Slippers", ItemRarity.LEGENDARY, 1, 96, Material.LEATHER_BOOTS, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
-		MMOPro.items.put("MYTHIC STEEL SWORD OF THE SAVIOR", new EcstasyItem("Mythic Steel Sword of the Savior", ItemRarity.LEGENDARY, 1, 96, Material.IRON_SWORD, "Sword", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 0.0, 100.0, 50.0, DropType.DISALLOW_DROP,5000.0,10000.0));
-		MMOPro.items.put("MYTHIC COMPOUND BOW OF THE SAVIOR", new EcstasyItem("Mythic Compound Bow of the Savior", ItemRarity.LEGENDARY, 1, 96, Material.IRON_SWORD, "Bow", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 0.0, 100.0, 50.0, DropType.DISALLOW_DROP,5000.0,10000.0));
+		MMOPro.items.put("GAMEMASTER HOOD", new EcstasyItem("Gamemaster Hood", ItemRarity.LEGENDARY, 60, 96, Material.LEATHER_HELMET, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.ALLOW_DROP));
+		MMOPro.items.put("GAMEMASTER'S ROBE TOP", new EcstasyItem("Gamemaster's Robe Top", ItemRarity.LEGENDARY, 60, 96, Material.LEATHER_CHESTPLATE, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
+		MMOPro.items.put("GAMEMASTER'S ROBE BOTTOM", new EcstasyItem("Gamemaster's Robe Bottom", ItemRarity.LEGENDARY, 60, 96, Material.LEATHER_LEGGINGS, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
+		MMOPro.items.put("GAMEMASTER'S SLIPPERS", new EcstasyItem("Gamemaster's Slippers", ItemRarity.LEGENDARY, 60, 96, Material.LEATHER_BOOTS, "Armor", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 750.0, 100.0, 50.0, DropType.DISALLOW_DROP));
+		MMOPro.items.put("MYTHIC STEEL SWORD OF THE SAVIOR", new EcstasyItem("Mythic Steel Sword of the Savior", ItemRarity.LEGENDARY, 60, 96, Material.IRON_SWORD, "Sword", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 0.0, 100.0, 50.0, DropType.DISALLOW_DROP,5000.0,10000.0));
+		MMOPro.items.put("MYTHIC COMPOUND BOW OF THE SAVIOR", new EcstasyItem("Mythic Compound Bow of the Savior", ItemRarity.LEGENDARY, 60, 96, Material.IRON_SWORD, "Bow", 1, 900.0, 800.0, 700.0, 600.0, 500.0, 0.0, 100.0, 50.0, DropType.DISALLOW_DROP,5000.0,10000.0));
 		
 		// Add all the default (Vanilla) items as EcstasyItems
 		int i;

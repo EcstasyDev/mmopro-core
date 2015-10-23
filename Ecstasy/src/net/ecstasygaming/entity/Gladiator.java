@@ -289,6 +289,21 @@ public class Gladiator {
 						}
 					}
 					
+					if((i.getRequiredLevel() > 0) && (this.getLevel() < i.getRequiredLevel()))
+					{ // If the player does not meet the requirements for this
+						Messenger.toPlayer(p, "You are not a high enough level to use this equipment.", MessageType.WARNING);
+						p.getInventory().remove(is);
+						p.getInventory().addItem(is);
+						continue; // Prevents stat calculation for this item
+					}
+					if((i.getRequiredClass() != 0) && (this.getClassNumber() != i.getRequiredClass()))
+					{ // If the player does not meet the requirements for this
+						Messenger.toPlayer(p, "You lack the required proficiency to use this equipment.", MessageType.WARNING);
+						p.getInventory().remove(is);
+						p.getInventory().addItem(is);
+						continue; // Prevents stat calculation for this item
+					}
+					
 					double dBase = ((20.0/(double)level)+(level)); // Permits a curve for new players
 					if(i != null)
 					{
@@ -307,10 +322,6 @@ public class Gladiator {
 						{
 							MMOPro.log.severe("Intercepted ConcurrentModificationException / Attempted to modify data concurrently as another source.  Will attempt resync next cycle.");
 						}
-					}
-					else
-					{
-						MMOPro.log.severe("Unable to determine EcstasyItem for itemstack in hand of '" + p.getName() + "'.");
 					}
 				}
 			}

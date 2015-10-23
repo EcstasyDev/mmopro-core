@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -38,7 +40,7 @@ public class PlayerEventHandler implements Listener {
 	// Handles damage by the environment and other sources
 	// Base of 9.5% damage
 	// Falling is 1.5x (14.5% + (Add. 5.5% per 6 blocks))
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerTakeDamage(EntityDamageEvent event)
 	{
 		if(event.getEntity() instanceof Player)
@@ -131,7 +133,7 @@ public class PlayerEventHandler implements Listener {
 	}
 	
 	// Handles player taking damage from mob
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerTakeDamage(EntityDamageByEntityEvent event)
 	{
 		if(event.getEntity() instanceof Player)

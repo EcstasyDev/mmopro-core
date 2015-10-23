@@ -19,7 +19,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
 
 import net.ecstasygaming.command.CMD_Item;
 import net.ecstasygaming.entity.BattleEntity;
@@ -56,7 +55,6 @@ public class MMOPro extends JavaPlugin {
 	public static final HashMap<String,EcstasyItem> items = new HashMap<String,EcstasyItem>();
 	
 	public static WorldEditPlugin worldedit;
-	public static Selection selection;
 	
 	// Zones
 	public static final HashMap<String,Zone> zones = new HashMap<String,Zone>();

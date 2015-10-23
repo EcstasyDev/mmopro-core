@@ -37,6 +37,9 @@ public class EcstasyItem {
 	private double att_dodge;
 	private double att_crit;
 	
+	// Class Requirement
+	private int clsRequired = 0; // Default
+	
 	private DropType droptype = DropType.DISALLOW_DROP;
 	
 	private ItemStack is;
@@ -143,6 +146,35 @@ public class EcstasyItem {
 		is = new ItemStack(stack,amount);
 		this.applyStats();
 	}
+	public EcstasyItem(String name, ItemRarity rarity, int reqLevel, int itemlevel, Material stack, String type, int amount, double str, double sta, double intel, double disc, double rng, double arm, double dodge, double crit, DropType droptype, double minHit, double maxHit, int classNumberRequired)
+	{
+		this.item_name = name;
+		this.rarity = rarity;
+		this.item_level = itemlevel;
+		this.stack = stack;
+		this.item_type = type;
+		this.item_usage_level = reqLevel;
+		
+		this.att_strength = str;
+		this.att_stamina = sta;
+		this.att_intellect = intel;
+		this.att_discipline = disc;
+		this.att_ranged = rng;
+		
+		this.att_armor = arm;
+		this.att_dodge = dodge;
+		this.att_crit = crit;
+		
+		this.droptype = droptype;
+		
+		this.min_damage = minHit;
+		this.max_damage = maxHit;
+		
+		this.clsRequired = classNumberRequired;
+		
+		is = new ItemStack(stack,amount);
+		this.applyStats();
+	}
 	
 	public String getItemName() { return this.item_name; }
 	public int getItemLevel() { return this.item_level; }
@@ -169,6 +201,8 @@ public class EcstasyItem {
 	}
 	public double getMinimumDamage() { return min_damage; }
 	public double getMaximumDamage() { return max_damage; }
+	
+	public int getRequiredClass() { return this.clsRequired; }
 	
 	public ItemStack getItemStack() { return is; }
 	

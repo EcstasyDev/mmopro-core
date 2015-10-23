@@ -26,7 +26,7 @@ public class CMD_Item implements CommandExecutor {
 		if(cmd.getName().equalsIgnoreCase("item"))
 		{
 			Player p = (Player) sender;
-			if(MMOPro.permission.has(sender, "ecstasy.mod.item"))
+			if(MMOPro.permission.has(sender, "mmopro.mod.item"))
 			{
 				if(args.length < 2)
 				{

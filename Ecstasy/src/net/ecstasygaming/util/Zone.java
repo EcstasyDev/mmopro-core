@@ -100,4 +100,7 @@ public class Zone {
 	{
 		return this.zoneBoss;
 	}
+	public static void saveZones() {
+		
+	}
 }
