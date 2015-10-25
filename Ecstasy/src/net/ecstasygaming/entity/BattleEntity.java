@@ -64,7 +64,7 @@ public class BattleEntity {
 		{
 			this.name = name;
 			
-			String str = "" + getHealthColor() + "(" + level + ") " + name + "[" + this.getHealth() + " / " + this.getMaxHealth() + "]";
+			String str = "" + getHealthColor() + "(" + level + ") " + name + " [" + this.getHealth() + " / " + this.getMaxHealth() + "]";
 			
 			e.setCustomName(str);
 			e.setCustomNameVisible(true);

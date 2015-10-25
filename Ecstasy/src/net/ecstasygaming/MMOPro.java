@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import net.ecstasygaming.command.CMD_Item;
+import net.ecstasygaming.command.CMD_Zone;
 import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.Gladiator;
 import net.ecstasygaming.event.InventoryEvents;
@@ -164,6 +165,15 @@ public class MMOPro extends JavaPlugin {
 			log.severe("No graveyards found.  Respawn locations will default to bed spawns and world spawns.");
 		}
 		
+		log.info("Loading zone configuration into cached memory.");
+		Zone z = null;
+		for(String key : config_zones.getStringList("zones"))
+		{
+			z = new Zone(key);
+			MMOPro.zones.put(key, z);
+		}
+		
+		
 		log.info("Loading global configuration into cached memory.");
 		// TODO: Put common global config values here
 		
@@ -171,6 +181,7 @@ public class MMOPro extends JavaPlugin {
 		// Register commands
 		log.info("Registering commands.");
 		this.getCommand("item").setExecutor(new CMD_Item(this));
+		this.getCommand("zone").setExecutor(new CMD_Zone(this));
 		
 		LootManager.init();
 		

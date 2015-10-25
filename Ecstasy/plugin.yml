@@ -2,7 +2,7 @@ name: MMOPro
 depend: [Vault, WorldEdit]
 main: net.ecstasygaming.MMOPro
 author: Zuthara
-version: 1.0.48
+version: 1.0.51
 description: Ecstasy Gaming Custom Plugin
 
 commands:

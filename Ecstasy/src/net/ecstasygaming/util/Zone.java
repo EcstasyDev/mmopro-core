@@ -1,5 +1,10 @@
 package net.ecstasygaming.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,6 +28,8 @@ public class Zone {
 	protected Location minPoint;
 	protected Location maxPoint;
 	
+	protected String mobPrefix = "";
+	
 	private String zoneName;
 	
 	// For initializing new zones in-game
@@ -36,23 +43,31 @@ public class Zone {
 	// For initializing zones from config (Existing Zones)
 	public Zone(String identifier)
 	{
+		MMOPro.log.info("Attempting to load zone from config: '" + identifier + "'");
 		if(MMOPro.config_zones.contains(identifier))
 		{
-			this.zoneName = MMOPro.config_zones.getString(identifier + ".name");
-			this.world = Bukkit.getWorld(MMOPro.config_zones.getString(identifier + ".world"));
-			double minX = MMOPro.config_zones.getDouble(identifier + ".min.x");
-			double minY = MMOPro.config_zones.getDouble(identifier + ".min.y");
-			double minZ = MMOPro.config_zones.getDouble(identifier + ".min.z");
-			double maxX = MMOPro.config_zones.getDouble(identifier + ".max.x");
-			double maxY = MMOPro.config_zones.getDouble(identifier + ".max.y");
-			double maxZ = MMOPro.config_zones.getDouble(identifier + ".max.z");
+			this.zoneName = MMOPro.config_zones.getString(identifier.toUpperCase() + ".name");
+			this.world = Bukkit.getWorld(MMOPro.config_zones.getString(identifier.toUpperCase() + ".world"));
+			double minX = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.min.x");
+			double minY = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.min.y");
+			double minZ = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.min.z");
+			double maxX = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.max.x");
+			double maxY = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.max.y");
+			double maxZ = MMOPro.config_zones.getDouble(identifier.toUpperCase() + ".bounds.max.z");
+			
+			this.setMinimumZoneLevel(MMOPro.config_zones.getInt(this.zoneName + ".level.min"));
+			this.setMaximumZoneLevel(MMOPro.config_zones.getInt(this.zoneName + ".level.max"));
+			this.setRaidZone(MMOPro.config_zones.getBoolean(this.zoneName + ".props.raid-zone"));
+			this.setEliteMonstersAllowed(MMOPro.config_zones.getBoolean(this.zoneName + ".props.elite-zone"));
 			
 			this.minPoint = new Location(this.world,minX,minY,minZ);
 			this.maxPoint = new Location(this.world,maxX,maxY,maxZ);
+			
+			MMOPro.log.info("Successfully loaded Zone '" + identifier.toUpperCase() + "' from config.");
 		}
 		else
 		{
-			MMOPro.log.severe("Attempted to load a zone that does not exist within records.");
+			MMOPro.log.severe("Attempted to load a zone ('" + identifier.toUpperCase() + "') that does not exist within records.");
 		}
 	}
 	
@@ -100,7 +115,39 @@ public class Zone {
 	{
 		return this.zoneBoss;
 	}
-	public static void saveZones() {
+	public static void saveZones()
+	{
+		
+		MMOPro plugin = (MMOPro) Bukkit.getServer().getPluginManager().getPlugin("MMOPro");
+		
+		Zone z = null;
+		List<String> strList = new ArrayList<String>();
+		for(String key : MMOPro.zones.keySet())
+		{
+			z = MMOPro.zones.get(key);
+			
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.min.x", z.getMinPointAsVector().getBlockX());
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.min.y", z.getMinPointAsVector().getBlockY());
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.min.z", z.getMinPointAsVector().getBlockZ());
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.max.x", z.getMinPointAsVector().getBlockX());
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.max.y", z.getMinPointAsVector().getBlockY());
+			MMOPro.config_zones.set(z.getZoneName() + ".bounds.max.z", z.getMinPointAsVector().getBlockZ());
+			
+			MMOPro.config_zones.set(z.getZoneName() + ".level.min", z.getMinimumZoneLevel());
+			MMOPro.config_zones.set(z.getZoneName() + ".level.max", z.getMaximumZoneLevel());
+			MMOPro.config_zones.set(z.getZoneName() + ".props.raid-zone", z.isRaidZone());
+			MMOPro.config_zones.set(z.getZoneName() + ".props.elite-zone", z.isEliteMonstersAllowed());
+			
+			strList.add(key);
+		}
+		
+		try {
+			MMOPro.config_zones.save(new File(plugin.getDataFolder() + File.separator + "zones.yml"));
+		} catch (IOException e) {
+			MMOPro.log.severe("Failed to save the zone configuration.");
+		}
+		
+		MMOPro.config_zones.set("zones", strList);
 		
 	}
 }
