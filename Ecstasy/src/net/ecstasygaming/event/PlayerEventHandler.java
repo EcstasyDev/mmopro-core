@@ -12,17 +12,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.ecstasygaming.MMOPro;
+import net.ecstasygaming.combat.PlayerCombatAttribute;
 import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.Gladiator;
-import net.ecstasygaming.entity.PlayerCombatAttribute;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
@@ -133,6 +131,7 @@ public class PlayerEventHandler implements Listener {
 	}
 	
 	// Handles player taking damage from mob
+	@SuppressWarnings("unused")
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void onPlayerTakeDamage(EntityDamageByEntityEvent event)
 	{

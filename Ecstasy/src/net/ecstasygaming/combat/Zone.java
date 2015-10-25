@@ -1,4 +1,4 @@
-package net.ecstasygaming.util;
+package net.ecstasygaming.combat;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 
 import net.ecstasygaming.MMOPro;
 import net.ecstasygaming.entity.BattleEntity;
-import net.ecstasygaming.entity.PlayerCombatAttribute;
 
 public class Zone {
 
@@ -39,6 +38,8 @@ public class Zone {
 		this.world = s.getWorld();
 		this.minPoint = s.getMinimumPoint();
 		this.maxPoint = s.getMaximumPoint();
+		
+		MMOPro.log.info("Successfully initialized Zone '" + zoneName.toUpperCase() + "' locally (to be saved).");
 	}
 	// For initializing zones from config (Existing Zones)
 	public Zone(String identifier)

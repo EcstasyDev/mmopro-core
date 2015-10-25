@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.ecstasygaming.entity.PlayerCombatAttribute;
+import net.ecstasygaming.combat.PlayerCombatAttribute;
 import net.md_5.bungee.api.ChatColor;
 
 public class EcstasyItem {

@@ -20,13 +20,13 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.regions.CuboidRegion;
 
 import net.ecstasygaming.MMOPro;
+import net.ecstasygaming.combat.PlayerCombatAttribute;
+import net.ecstasygaming.combat.Zone;
 import net.ecstasygaming.entity.BattleEntity;
 import net.ecstasygaming.entity.Gladiator;
-import net.ecstasygaming.entity.PlayerCombatAttribute;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
-import net.ecstasygaming.util.Zone;
 
 public class MobSpawningHandler implements Listener {
 	
@@ -122,7 +122,46 @@ public class MobSpawningHandler implements Listener {
 		}
 		else
 		{
-			event.setCancelled(true);
+			MMOPro.log.info("Spawning " + e.getType().toString() + " in Common Zone.");
+			Random r = new Random();
+			level = r.nextInt(Math.abs(4))+1;
+			
+			be.setLevel(level);
+			
+			if(elite)
+			{
+				be.setCombatAttribute(PlayerCombatAttribute.STAMINA, (level*MMOPro.config_global.getDouble("mobs.multipliers.stamina.elite")));
+				be.setCombatAttribute(PlayerCombatAttribute.STRENGTH, (level*MMOPro.config_global.getDouble("mobs.multipliers.strength.elite")));
+				be.setCombatAttribute(PlayerCombatAttribute.RANGED, (level*MMOPro.config_global.getDouble("mobs.multipliers.ranged.elite")));
+				be.setCombatAttribute(PlayerCombatAttribute.INTELLECT, (level*MMOPro.config_global.getDouble("mobs.multipliers.intellect.elite")));
+				be.setCombatAttribute(PlayerCombatAttribute.DISCIPLINE, (level*MMOPro.config_global.getDouble("mobs.multipliers.discipline.elite")));
+				
+				be.setCombatAttribute(PlayerCombatAttribute.DODGE, (level*MMOPro.config_global.getDouble("mobs.multipliers.dodge.elite")));
+				be.setCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE, (level*MMOPro.config_global.getDouble("mobs.multipliers.critical-strike.elite")));
+			}
+			else
+			{
+				be.setCombatAttribute(PlayerCombatAttribute.STAMINA, (level*MMOPro.config_global.getDouble("mobs.multipliers.stamina.normal")));
+				be.setCombatAttribute(PlayerCombatAttribute.STRENGTH, (level*MMOPro.config_global.getDouble("mobs.multipliers.strength.normal")));
+				be.setCombatAttribute(PlayerCombatAttribute.RANGED, (level*MMOPro.config_global.getDouble("mobs.multipliers.ranged.normal")));
+				be.setCombatAttribute(PlayerCombatAttribute.INTELLECT, (level*MMOPro.config_global.getDouble("mobs.multipliers.intellect.normal")));
+				be.setCombatAttribute(PlayerCombatAttribute.DISCIPLINE, (level*MMOPro.config_global.getDouble("mobs.multipliers.discipline.normal")));
+				
+				be.setCombatAttribute(PlayerCombatAttribute.DODGE, (level*MMOPro.config_global.getDouble("mobs.multipliers.dodge.normal")));
+				be.setCombatAttribute(PlayerCombatAttribute.CRITICAL_STRIKE, (level*MMOPro.config_global.getDouble("mobs.multipliers.critical-strike.normal")));
+			}
+			
+			health = be.getCombatAttribute(PlayerCombatAttribute.STAMINA) * MMOPro.config_global.getDouble("mobs.multipliers.health");
+			
+			be.setElite(elite);
+			if(elite) be.setMaxHealth(health);
+			else be.setMaxHealth(health);
+			
+			be.setHealth(health);
+			
+			be.setName(WordUtils.capitalizeFully(e.getName()));
+			
+			MMOPro.mobs.put(e.getEntityId(), be);
 		}
 		
 	}	

@@ -9,9 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import net.ecstasygaming.MMOPro;
+import net.ecstasygaming.combat.PClass;
+import net.ecstasygaming.combat.PlayerCombatAttribute;
 import net.ecstasygaming.objects.EcstasyItem;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
+import net.ecstasygaming.util.TitlePosition;
 import net.md_5.bungee.api.ChatColor;
 
 public class Gladiator {
@@ -20,7 +23,7 @@ public class Gladiator {
 	private String title;
 	// Basic
 	private int level;
-	private int cls;
+	private PClass cls;
 	private int xp;
 	// Health
 	private double health;
@@ -43,6 +46,8 @@ public class Gladiator {
 	private double max_resource;
 	private double resource;
 	
+	public boolean global_cooldown = false;
+	
 	private ItemStack[] pastContents = null;
 	
 	private Player p; // The corresponding player entity which this class connects to
@@ -52,7 +57,7 @@ public class Gladiator {
 		this.p = p;
 		
 		level = 1;
-		cls = -1;
+		cls = new PClass();
 		health = 100.0;
 		max_health = 100.0;
 		outgoing_damage_multiplier = 1.00;
@@ -155,17 +160,21 @@ public class Gladiator {
 		return (this.level);
 	}
 	
-	public void setClass(int level)
+	public void setClass(int n)
 	{
-		this.cls = level;
+		this.cls = new PClass(n);
 	}
 	public int getClassNumber()
+	{
+		return (this.cls.getClassNumber());
+	}
+	public PClass getPlayerClass()
 	{
 		return (this.cls);
 	}
 	public String getClassString()
 	{
-		switch(this.cls)
+		switch(this.cls.getClassNumber())
 		{
 		case 0: return "Warrior";
 		case 1: return "Paladin";
@@ -354,7 +363,7 @@ public class Gladiator {
 		if(MMOPro.config_players.contains(p.getUniqueId().toString()))
 		{
 			this.level = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".level");
-			this.cls = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".class");
+			this.cls = new PClass(MMOPro.config_players.getInt(p.getUniqueId().toString() + ".class"));
 			this.xp = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".xp");
 			String t = MMOPro.config_players.getString(p.getUniqueId().toString() + ".title.text");
 			int tpos = MMOPro.config_players.getInt(p.getUniqueId().toString() + ".title.pos");
@@ -377,7 +386,7 @@ public class Gladiator {
 	public void saveInfo()
 	{ // Pushes the player's info to the database
 		MMOPro.config_players.set(p.getUniqueId().toString() + ".level", this.level);
-		MMOPro.config_players.set(p.getUniqueId().toString() + ".cls", this.cls);
+		MMOPro.config_players.set(p.getUniqueId().toString() + ".cls", this.cls.getClassNumber());
 		MMOPro.config_players.set(p.getUniqueId().toString() + ".xp", this.xp);
 		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.text", this.title);
 		MMOPro.config_players.set(p.getUniqueId().toString() + ".title.pos", 0);

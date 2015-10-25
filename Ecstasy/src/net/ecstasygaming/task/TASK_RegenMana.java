@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import net.ecstasygaming.MMOPro;
+import net.ecstasygaming.combat.PlayerCombatAttribute;
 import net.ecstasygaming.entity.Gladiator;
-import net.ecstasygaming.entity.PlayerCombatAttribute;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
 

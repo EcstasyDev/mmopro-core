@@ -8,9 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.ecstasygaming.MMOPro;
+import net.ecstasygaming.combat.Zone;
 import net.ecstasygaming.util.MessageType;
 import net.ecstasygaming.util.Messenger;
-import net.ecstasygaming.util.Zone;
 
 public class CMD_Zone implements CommandExecutor {
 

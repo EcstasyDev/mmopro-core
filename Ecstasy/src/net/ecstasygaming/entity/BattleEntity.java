@@ -2,6 +2,7 @@ package net.ecstasygaming.entity;
 
 import org.bukkit.entity.Entity;
 
+import net.ecstasygaming.combat.PlayerCombatAttribute;
 import net.md_5.bungee.api.ChatColor;
 
 public class BattleEntity {

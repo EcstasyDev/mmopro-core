@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
+import net.ecstasygaming.combat.Zone;
 import net.ecstasygaming.command.CMD_Item;
 import net.ecstasygaming.command.CMD_Zone;
 import net.ecstasygaming.entity.BattleEntity;
@@ -33,7 +34,6 @@ import net.ecstasygaming.task.TASK_AutosaveConfigs;
 import net.ecstasygaming.task.TASK_RegenMana;
 import net.ecstasygaming.task.TASK_ResyncPlayer;
 import net.ecstasygaming.util.LootManager;
-import net.ecstasygaming.util.Zone;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
